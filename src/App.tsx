@@ -42,7 +42,11 @@ export default function App() {
     if (overrideId) params.set('l', overrideId);
     else if (dateKey !== todayKey()) params.set('d', dateKey);
     const qs = params.toString();
-    history.replaceState(null, '', qs ? `?${qs}` : location.pathname);
+    try {
+      history.replaceState(null, '', qs ? `?${qs}` : location.pathname);
+    } catch {
+      /* sandboxed frames may forbid URL changes */
+    }
   }, [dateKey, overrideId]);
 
   useEffect(() => {
